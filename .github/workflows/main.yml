@@ -11,21 +11,11 @@ jobs:
       matrix:
         otp: [25, 26]
         postgres: ['14', '15', '16beta1']
-    services:
-      postgres:
-        image: postgres:${{matrix.postgres}}
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        volumes:
-          - /etc/initdb.d:/docker-entrypoint-initdb.d
-          - /etc/conf/${{matrix.postgres}}.conf:/etc/postgresql/postgresql.conf
     steps:
       - uses: actions/checkout@v3
+      - run: sudo docker-compose up --detached
+        env:
+          POSTGRES_VERSION: ${{matrix.postgres}}
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{matrix.otp}}

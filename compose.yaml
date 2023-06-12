@@ -1,0 +1,23 @@
+---
+services:
+  postgres:
+    image:
+      ${POSTGRES_IMAGE:-postgres:${POSTGRES_VERSION}}
+    environment:
+      PGUSER: postgres
+      POSTGRES_PASSWORD: postgres
+    command:
+      -c wal_level=logical
+    ports:
+      - 5432:5432
+    volumes:
+      - type: bind
+        source: etc/initdb.d/
+        target: /docker-entrypoint-initdb.d/
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    pull_policy:
+      ${PULL_POLICY:-missing}
