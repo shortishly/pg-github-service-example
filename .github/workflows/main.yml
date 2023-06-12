@@ -1,0 +1,23 @@
+---
+name: PostgreSQL Service Example
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        otp: [25, 26]
+        postgres: ['14', '15', '16beta1']
+    services:
+      postgres:
+        image: postgres:${{matrix.postgres}}
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
