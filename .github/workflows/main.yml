@@ -13,7 +13,7 @@ jobs:
         postgres: ['14', '15', '16beta1']
     steps:
       - uses: actions/checkout@v3
-      - run: sudo docker-compose up --detach
+      - run: docker-compose up --detach
         env:
           POSTGRES_VERSION: ${{matrix.postgres}}
       - uses: erlef/setup-beam@v1
