@@ -11,9 +11,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - type: bind
-        source: etc/initdb.d/
-        target: /docker-entrypoint-initdb.d/
+      - etc/initdb.d/:/docker-entrypoint-initdb.d/
     healthcheck:
       test: /usr/bin/pg_isready
       interval: 5s
