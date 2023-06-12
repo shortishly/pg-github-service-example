@@ -17,11 +17,13 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
-          -c wal_level=logical
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        volumes:
+          - /etc/initdb.d:/docker-entrypoint-initdb.d
+          - /etc/conf/${{matrix.postgres}}.conf:/etc/postgresql/postgresql.conf
     steps:
       - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
